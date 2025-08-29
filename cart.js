@@ -30,6 +30,8 @@
         buttonContainer.style.flexDirection='row';
         buttonContainer.style.justifyContent='space-between';
         buttonContainer.style.marginTop='20px';
+        buttonContainer.style.flexWrap='wrap';
+        buttonContainer.style.gap='10px';
 
 
         const checkoutButton=document.createElement('button');
