@@ -1,0 +1,37 @@
+[
+    {
+        "id":1,
+        "name":"Men's T-Shirt",
+        "description":"Casual t-shirt for men",
+        "price": 29.99,
+        "image":"mens-t-shirt.jpg"
+    },
+    {
+           "id":2,
+        "name":"Women's Dress",
+        "description":"Elegant dress for women",
+        "price": 59.99,
+        "image":"womens-dress.jpg"
+    },
+    {
+           "id":3,
+        "name":"Kids' Sneakers",
+        "description":"Comfortable sneakers for kids",
+        "price": 99.99,
+        "image":"kids-sneakers.jpg"
+    },
+    {
+           "id":4,
+        "name":"Men's Jeans",
+        "description":"Stylish jeans for men",
+        "price": 79.99,
+        "image":"mens-jeans.jpg"
+    },
+    {
+           "id":5,
+        "name":"Women's Jacket",
+        "description":"Warm jacket for women",
+        "price": 49.99,
+        "image":"womens-jacket.jpg"
+    }
+]

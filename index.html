@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+</head>
+<body>
+    <script>
+        let cart=[];
+        function addToCart(product){
+            const existingProduct=cart.find((item)=>item.id===product.id);
+            if(existingProduct){
+                alert(`Product"${product.name}" is already in your cart.`);
+                window.location.href='cart.html';
+                return;
+            }
+            cart.push(product);
+            updateCartCount();
+            localStorage.setItem('cart',JSON.stringify(cart));
+            window.location.href='cart.html';
+        }
+         
+        function updateCartCount(){
+            const cartCountElement=document.querySelector('#cart-count');
+           const cart=JSON.parse(localStorage.getItem('cart'))||[];
+            cartCountElement.textContent=cart.length;
+            if(cartCountElement){
+                cartCountElement.textContent=cart.length;
+            }else{
+                console.error('Cart count element not found');
+            }
+        }
+        document.addEventListener('DOMContentLoaded',function(){
+            cart=JSON.parse(localStorage.getItem('cart'))||[];
+            updateCartCount();
+        });
+                fetch('products.json')
+        .then(response=>response.json())
+        .then(data=>{
+            const productGrid=document.getElementById('product-grid');
+            data.slice(0,3).forEach(product=>{
+                const productCard=document.createElement('div');
+
+                productCard.classList.add('product-card')
+                productCard.innerHTML=`<img src="${product.image}" alt="${product.name}"> <h2>${product.name}</h2> <p>${product.description}</p> <p>$${product.price}</p>
+             <button class="add-to-cart" data-id="${product.id}" data-name= "${product.name}"data-price="${product.price}"
+             data-image="${product.image}">Add to Cart</button>`;
+                productGrid.appendChild(productCard);
+            });
+            const addToCartButtons=document.querySelectorAll('.add-to-cart');
+            addToCartButtons.forEach(button=>{
+                button.addEventListener('click',()=>{
+                    const product={
+                        id:button.getAttribute('data-id'),
+                        name:button.getAttribute('data-name'),
+                        price:button.getAttribute('data-price'),
+                        image:button.getAttribute('data-image'),
+                        };
+                        addToCart(product);
+                });
+            });
+        })
+        .catch(error=>console.error('Error:',error));
+        
+    </script>
+   <!--Header --> 
+   <header>
+    <nav>
+        <div class="hamburger-menu">
+            <i class='bx bx-menu'></i>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class='bx bx-home'></i></a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="about-us.html">About Us</a></li>
+            <li><a href="contact-us.html">Contact Us</a></li>
+            <li><a href="cart.html"><i class='bx bx-cart'></i><span id="cart-count">0</span></a></li>
+     </ul>
+     <ul class="auth-links">
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+     </ul>
+    </nav>
+    <script src="script.js"></script>
+  <section class="featured-products">
+    <h2>Our Latest Products</h2>
+    <div id="product-grid"></div>
+  </section>
+  <section class="about-us">
+    <h2>About Us</h2>
+    <p>We are a team of passionate individuals dedicated to providing high-quality products.</p>
+    <button>Learn More</button>
+  </section>
+  <section class="call-to-action">
+    <h2>Get Started Today</h2>
+    <p>Browse our collection of products and discover something new.</p>
+    <button><a href="products.html">Shop Now</a></button>
+
+  </section>
+    
+   </header>
+   
+</body>
+</html>

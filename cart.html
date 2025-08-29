@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Cart</title>
+</head>
+<body>
+    <h1>Cart</h1>
+   <div id="cart-products"></div>
+   
+   <div id="total-price"></div>
+
+   <script>
+    const cart=JSON.parse(localStorage.getItem('cart'))||[];
+    console.log(cart);
+    const cartProductsElement=document.getElementById('cart-products');
+    const totalPriceElement=document.getElementById('total-price');
+    if(cart.length===0){
+        cartProductsElement.textContent='Cart is empty';
+        totalPriceElement.textContent="";
+
+    }else{
+        cartProductsElement.innerHTML="";
+        cart.forEach((product,index)=>{
+            const productElement=document.createElement('div');
+            productElement.innerHTML=`<h2>${product.name}</h2>
+            <p>$${product.price}</p>
+            <img src="${product.image}" alt="${product.name}">
+            <p>Quantity: <input type="number" value="${product.quantity||1}" id="quantity-${index}"></p>
+            <p id="product-total-${index}">Total: $${product.price*(product.quantity||1)}</p>
+            <button class="update-button" onclick="updateQuantity(${index})">Update Quantity</button>
+            <button class="remove-button" onclick="removeItem(${index})">Remove</button>
+            <hr>
+            `;
+
+
+            cartProductsElement.appendChild(productElement);
+        });
+
+
+        const buttonContainer=document.createElement('div');
+        buttonContainer.style.display='flex';
+        buttonContainer.style.flexDirection='row';
+        buttonContainer.style.justifyContent='space-between';
+        buttonContainer.style.marginTop='20px';
+
+
+        const checkoutButton=document.createElement('button');
+        checkoutButton.textContent='Checkout';
+        checkoutButton.id='checkout-button';
+        checkoutButton.onclick=processCheckout;
+        buttonContainer.appendChild(checkoutButton);
+
+        const continueShoppingButton=document.createElement('button');
+        continueShoppingButton.textContent='Continue Shopping';
+        continueShoppingButton.id='continue-shopping-button';
+        continueShoppingButton.onclick=function(){
+            window.location.href='products.html';
+        };
+        buttonContainer.appendChild(continueShoppingButton);
+
+        const homeButton=document.createElement('button');
+        homeButton.textContent='Home';
+        homeButton.id='home-button';
+        homeButton.onclick=function(){
+            window.location.href='index.html';
+        };
+        buttonContainer.appendChild(homeButton);
+
+        const totalPrice=calculateTotalPrice();
+        const totalPriceElement=document.createElement('p');
+        totalPriceElement.id='total-price';
+        totalPriceElement.textContent=`Total Price: $${totalPrice}`;
+        cartProductsElement.appendChild(totalPriceElement);
+        cartProductsElement.appendChild(buttonContainer);
+        
+        calculateTotalPrice();
+    }
+    function calculateTotalPrice(){
+        let totalPrice=0;
+        cart.forEach(product=>{
+            totalPrice+=product.price*(product.quantity||1);
+        });
+        return totalPrice;
+    }
+    function updateQuantity(index){
+        const newQuantity=document.getElementById(`quantity-${index}`).value;
+        cart[index].quantity=newQuantity;
+        localStorage.setItem('cart',JSON.stringify(cart));
+        
+    //updating the total price for the product
+
+    const productTotalElement=document.querySelector(`#product-total-${index}`);
+    if(productTotalElement){
+        productTotalElement.textContent=`Total: $${cart[index].price*cart[index].quantity}`;
+    }
+
+    const totalPrice=calculateTotalPrice();
+    document.querySelector('#total-price').textContent=`Total Price: $${totalPrice}`;
+
+    alert('Quantity updated successfully!');
+    }
+    function removeItem(index){
+        cart.splice(index,1);
+        localStorage.setItem('cart',JSON.stringify(cart));
+        location.reload();
+    }
+    function processCheckout(){
+        alert('Checkout processed!');
+        localStorage.removeItem('cart');
+        location.reload();
+    }
+   </script>
+</body>
+</html>
