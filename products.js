@@ -35,6 +35,13 @@
                 successMessageElement.remove();
             },2000);
         }
+                const hamburgerMenu=document.querySelector('.hamburger-menu');
+        const navLinks=document.querySelector('.nav-links');
+
+        hamburgerMenu.addEventListener('click',()=>{
+            navLinks.classList.toggle('active');
+        });
+        
         fetch('products.json')
         .then(response=>response.json())
         .then(data=>{
